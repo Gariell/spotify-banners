@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Left_banner</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" href="./style.css">
+	<link rel="stylesheet" href="./fonts.css">
+	<link rel="stylesheet" href="./animatoin.css">
+</head>
+
+<body>
+	<div class="preloader active" >
+		<div class="preloader-image"><img src="./images/preloader.gif" alt="preloader"></div>
+	</div>
+	<style>
+		.preloader {z-index: 9999;position: absolute;	height: 100%;	width: 100%;top: 0;left: 0;background: rgb(255, 255, 255);	display: flex;align-items: center;justify-content: center;opacity: 0;visibility: hidden;transition: 0.3s;}
+		.preloader.active {
+			opacity: 1;
+			visibility: visible;
+		}
+	</style>
+	<div class="side-container" >
+		<!--  -->
+		<div class="layer layer_one active" id="layerOne">
+			<div class="content" >
+				<div class="blocktext ">
+					<ul class="text-list">
+						<li class="active">it took you</li>
+						<li class="active">two weeks</li>
+						<li class="active focus ">to go off</li>
+						<li class="active">and date her</li>
+						<li>Guess you</li>
+						<li>didnt cheat</li>
+						<li>But you're</li>
+					</ul>
+					<button class="pulse pulse_green button-lyrics"><img src="./images/lyrics.svg" alt="lyrics"></button>
+				</div>
+				<div class="circle-wrapper" >
+					<div class="image"><img src="./images/OLIVIA.png" alt="OLIVIA"></div>
+				</div>
+				<div class="button-test-wrapper">
+					<button class="pulse button-test"><img src="./images/btn-test.svg" alt="btn"></button>
+				</div>
+			</div>
+		</div>
+		<!--  -->
+		<div class="layer layer_two" id="layerTwo">
+			<div class="content"  >
+				<div class="blocktext">
+					<p style="display: none;" class="pageTextSource" >Einfach Play drücken und hochwischen</p>
+					<p style="display: none;" class="pageTextSource">Und Lyrics zum Song mitlesen.</p>
+					<p style="opacity: 0;" class="pageTextSource">Endlich deine Lieblingssongs	mitsingen.</p>
+					<p  style="position: absolute; top: 30px; left: 0;" class="pageText"></p>
+				</div>
+				<div class="circle-wrapper" id="circleLayerOne">
+					<div class="circle">
+						<div class="image active"><img src="./images/billie-eilish.jpg" alt="billie-eilish"></div>
+						<div class="image"><img src="./images/nasx.jpg" alt="nasx"></div>
+						<div class="image"><img src="./images/ed.jpg" alt="ed"></div>
+						<div class="image"><img src="./images/OLIVIA.png" alt="OLIVIA"></div>
+						<div class="image"><img src="./images/glad.jpg" alt="glad"></div>
+					</div>					
+				</div>
+				<div class="button-test-wrapper">
+					<button class="pulse button-test"><img src="./images/btn-test.svg" alt="btn"></button>
+				</div>
+			</div>
+		</div>
+		<!--  -->
+		<div class="layer layer_three" id="layerThree">
+			<div class="content" >
+				<div class="blocktext" >
+					<p style="opacity: 0;" class="pageTextSource">Textsicher statt lost. Mit Lyrics.</p>
+					<p  style="position: absolute; top: 0; left: 0;" class="pageText"></p>
+				</div>
+			</div>
+		</div>
+		<!--  -->
+
+		<div class="footer">
+			<div class="image-logo-wrapper">
+				<div class="image-logo"><img src="./images/logo_main.png" alt="logo"></div>
+			</div>
+		</div>
+
+	</div>
+
+	<script>
+			const preloader = document.querySelector('.preloader')
+		
+			const imagesRotate = document.querySelectorAll('.circle>.image');
+			const circleWrapper = document.querySelector('#circleLayerOne');
+			const circles = document.querySelectorAll('.circle-wrapper')
+			const circleImages = document.querySelectorAll('.image')
+
+			const list = document.querySelectorAll('.text-list>li');
+			const layerOne = document.querySelector('#layerOne');
+			const layerTwo = document.querySelector('#layerTwo');
+			const layerThree = document.querySelector('#layerThree');
+			
+			const ANIMATION_START_DELAY_MS = 500,
+						ANIMATOIN_SPEED_FACTOR_MS = 1,
+						DATA_UPDATE_MS = 50, 	
+						SIDES_READY_CHECK_MS = 10,
+						LIST_TOGGLE_ACTIVE_DELAY_MS = 700,
+						IMAGE_ROTATE_DELAY_MS = 2000,
+						IMAGE_ANIMATION_DETAY_MS = 500,
+						SHOW_TEXT_DELAY_MS = 500,
+						TEXT_ACTIVE_DURATION_MS = 3000,
+						TOGGLE_LAYER_DELAY_MS = 2000
+
+
+			// начало анимации
+			function start() {
+				preloader.classList.remove('active')
+				setTimeout(() => {
+					listStartAnimation()
+					layerToggleDelay('l2');
+				}, ANIMATION_START_DELAY_MS * ANIMATOIN_SPEED_FACTOR_MS);
+			}
+
+			// смена активного слоя
+			function layersToggleActive(p) {
+				if (p == "l2") {
+					layerOne.classList.remove('active');
+					layerTwo.classList.add('active');
+					showImages()
+					setTimeout(() => {
+						showText(0)
+					}, SHOW_TEXT_DELAY_MS * ANIMATOIN_SPEED_FACTOR_MS);
+				} else if (p=="l3"){
+					layerTwo.classList.remove('active');
+					layerThree.classList.add('active');
+					setTimeout(() => {
+						showText(1)
+					}, SHOW_TEXT_DELAY_MS  * ANIMATOIN_SPEED_FACTOR_MS);
+				} else {
+					console.log('error')
+				}
+			}
+			// 
+
+			// поворот изображений
+			function showImages() {
+				circleWrapper.classList.add('active');
+				for (let i = 1; i < imagesRotate.length; i++) {
+					imageActive(i)
+				}
+				layerToggleDelay('l3');
+			}
+			function imageActive(i) {
+				setTimeout(() => {
+					setTimeout(() => {
+						imagesRotate[i].classList.add('active')
+					}, IMAGE_ANIMATION_DETAY_MS * ANIMATOIN_SPEED_FACTOR_MS);
+				}, i * IMAGE_ROTATE_DELAY_MS * ANIMATOIN_SPEED_FACTOR_MS);
+			}
+			// 
+
+			// анимация строчек
+			function listStartAnimation() {
+				for ( let i = 2; i + 2 < list.length; i++) {				
+					listToggleActive(i)	
+				}
+			}
+			function listToggleActive(p) {
+				setTimeout(function() {
+					removeFocus()
+					list[p + 1].classList.add('focus');
+					list[p - 2].classList.remove('active');
+					list[p + 2].classList.add('active');
+				}, p * LIST_TOGGLE_ACTIVE_DELAY_MS * ANIMATOIN_SPEED_FACTOR_MS);
+			}
+			function removeFocus() {
+				list.forEach(el => {
+					el.classList.remove('focus');
+				});
+			}
+			// 
+
+			// смена слоя
+			function layerToggleDelay(p) {
+				if (p=="l2") {
+					setTimeout(() => {
+						layersToggleActive('l2')
+					}, (list.length - 1) * LIST_TOGGLE_ACTIVE_DELAY_MS * ANIMATOIN_SPEED_FACTOR_MS) ;
+				} else if (p=="l3") {
+					setTimeout(() => {
+						layersToggleActive("l3");
+					}, (imagesRotate.length - 1) * IMAGE_ROTATE_DELAY_MS * ANIMATOIN_SPEED_FACTOR_MS + TOGGLE_LAYER_DELAY_MS);
+				} 
+			}
+
+			// побуквенное появление текста
+			let source, dest, len, now = 0, delay = 50 * ANIMATOIN_SPEED_FACTOR_MS, letters = 1;
+			const sourceAll = document.querySelectorAll(".pageTextSource");
+			const destAll = document.querySelectorAll(".pageText");
+			function showText(p) {
+				if (p == 0) {
+					dest = destAll[0]
+					for (let i = 0; i < sourceAll.length - 1; i++) {
+						showTextF(i)
+					}
+				} else {
+					now = 0
+					source = sourceAll[sourceAll.length - 1]
+					dest = destAll[1]
+					len = source.innerHTML.length;
+					show();
+				}				
+			}
+			function showTextF(p) {
+				setTimeout(() => {
+					now = 0
+					dest.innerText = ''
+					source = sourceAll[p]
+					len = source.innerHTML.length;
+					show();
+				}, p * TEXT_ACTIVE_DURATION_MS * ANIMATOIN_SPEED_FACTOR_MS);
+			}
+			function show(){
+				dest.innerHTML += source.innerHTML.substr(now, letters);
+				now += letters;
+				if (now < len) setTimeout(show, delay);
+			}
+			// 
+
+			// высота круга
+			setInterval(() => {
+				circles.forEach(el => {
+					let i = el.offsetWidth
+					el.style.height = i + 'px'
+				});
+			}, DATA_UPDATE_MS);
+			// 
+
+			// var isLeftLoaded
+			// document.addEventListener('DOMContentLoaded', () => {
+			// 	isLeftLoaded = true
+			// })
+			
+			// let sidesReady
+			// let sidesReadyCheck = setInterval(function(){
+			// 	if (sidesReady !== true) {
+			// 		let parent = window.parent,
+			// 				left = parent[0].isLeftLoaded,
+			// 				top = parent[1].isTopLoaded,
+			// 				bottom = parent[2].isBottomLoaded,
+			// 				right = parent[3].isRightLoaded
+							
+			// 		if (left && top && right && bottom) {
+			// 			clearInterval(sidesReadyCheck);
+						start()
+			// 		}
+			// 	} 
+			// }, SIDES_READY_CHECK_MS);
+
+			const sideContainer = document.querySelector('.side-container')
+			window.addEventListener("message", (event) => {
+				let data = event.data;
+				data = new Function( 'return (' + data + ')' )();
+				if (data.w < 1200 ) sideContainer.classList.add('small');
+				else sideContainer.classList.remove('small');
+			});
+			
+	</script>
+
+	<script>
+		/* Это - функция клика, её не нужно изменять */
+		var x_click=document.getElementsByTagName("body")[0];x_click.addEventListener("click",clickout_1);var clickTag=readGETParameter("dspx_clicktag_p"),dspx_debug=readGETParameter("dspx_debug"),clickoutLinkRedirect=readGETParameter("dspx_clicktag"),clickoutLink2=readGETParameter("dspxct"),clickoutEncodeLevel=readGETParameter("dspx_encodelevel");function readGETParameter(e){for(var c=window.location.search.substring(1).split("&"),i=0;i<c.length;i++){var t=c[i].split("=");if(t[0]==e)return decodeURIComponent(t[1])}return"dspx_encodelevel"==e?2:0}function clickout_1(){fireASCClicks();var e=clickTag;0!=clickoutLinkRedirect&&(e=clickoutLinkRedirect+btoa(e)),0!=clickoutLink2&&(e=clickoutLink2+encodeURIComponent(e)),dspx_debug&&console.log(e),window.open(e)}function fireASCClicks(){var e=function(e,c){for(var i=window.location.search.substring(1).split("&"),t=[],r=0;r<i.length;r++)for(var o=i[r].split("="),n=0;n<c;n++)cc=0==n?e:e+n,o[0]==cc&&t.push(decodeURIComponent(o[1]));return t}("dspx_clicktagASC",5);for(i=0;i<e.length;i++)1==dspx_debug&&console.log("fire Click ASC:"+e[i]),(new Image).src=e[i]}
+
+	</script>
+</body>
+
+</html>

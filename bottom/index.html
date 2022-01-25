@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Bottom_banner</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" href="./style.css">
+	<link rel="stylesheet" href="./fonts.css">
+</head>
+
+<body>
+	<div class="preloader active" >
+		<div class="preloader-image"><img src="./images/preloader.gif" alt="preloader"></div>
+	</div>
+	<style>
+		.preloader {z-index: 9999;position: absolute;	height: 100%;	width: 100%;top: 0;left: 0;background: rgb(255, 255, 255);	display: flex;align-items: center;justify-content: center;opacity: 0;visibility: hidden;transition: 0.3s;}
+		.preloader.active {
+			opacity: 1;
+			visibility: visible;
+		}
+	</style>
+	<div class="side-container">
+		<div class="image-logo">
+			<img src="./images/logo_main.png" alt="logo">
+		</div>
+	</div>
+	<script>
+		const preloader = document.querySelector('.preloader')
+		const SIDES_READY_CHECK_MS = 10
+		function start() {
+			preloader.classList.remove('active')
+		}
+
+		// var isBottomLoaded
+		// document.addEventListener('DOMContentLoaded', () => {
+		// 	isBottomLoaded = true
+		// })
+
+		// let sidesReady
+		// let sidesReadyCheck = setInterval(function(){
+		// 	if (sidesReady !== true) {
+		// 		let parent = window.parent,
+		// 				left = parent[0].isLeftLoaded,
+		// 				top = parent[1].isTopLoaded,
+		// 				bottom = parent[2].isBottomLoaded,
+		// 				right = parent[3].isRightLoaded
+
+		// 		if (left && top && right && bottom) {
+		// 			sidesReady = true
+		// 			clearInterval(sidesReadyCheck);
+					start()
+		// 		}
+		// 	} 
+		// }, SIDES_READY_CHECK_MS);
+
+		
+	</script>
+	<script>
+			var x_click=document.getElementsByTagName("body")[0];x_click.addEventListener("click",clickout_1);var clickTag=readGETParameter("dspx_clicktag_p"),dspx_debug=readGETParameter("dspx_debug"),clickoutLinkRedirect=readGETParameter("dspx_clicktag"),clickoutLink2=readGETParameter("dspxct"),clickoutEncodeLevel=readGETParameter("dspx_encodelevel");function readGETParameter(e){for(var c=window.location.search.substring(1).split("&"),i=0;i<c.length;i++){var t=c[i].split("=");if(t[0]==e)return decodeURIComponent(t[1])}return"dspx_encodelevel"==e?2:0}function clickout_1(){fireASCClicks();var e=clickTag;0!=clickoutLinkRedirect&&(e=clickoutLinkRedirect+btoa(e)),0!=clickoutLink2&&(e=clickoutLink2+encodeURIComponent(e)),dspx_debug&&console.log(e),window.open(e)}function fireASCClicks(){var e=function(e,c){for(var i=window.location.search.substring(1).split("&"),t=[],r=0;r<i.length;r++)for(var o=i[r].split("="),n=0;n<c;n++)cc=0==n?e:e+n,o[0]==cc&&t.push(decodeURIComponent(o[1]));return t}("dspx_clicktagASC",5);for(i=0;i<e.length;i++)1==dspx_debug&&console.log("fire Click ASC:"+e[i]),(new Image).src=e[i]}
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+
+<!-- Это тело страницы, здесь ничего не надо изменять -->
+
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <iframe id="left-creative" src="./left/index.html" frameborder="0"></iframe>
+        <div class="main">
+            <iframe id="top-creative" src="./top/index.html" frameborder="0" scrolling="no"></iframe>
+            <img id="site_main" src="./default.jpg" alt="default">
+            <div class="infos">
+                <p class="size-info">
+                    <span>
+                        Your <b>browser window is too small</b> for the ad to serve correctly.<br>
+                        In a live environment this creative would not be served.
+                    </span>
+                </p>
+            </div>
+            <p class="test-info"><span class="ua"></span><span class="display"></span></p>
+            <iframe id="bottom-creative" src="./bottom/index.html" frameborder="0" scrolling="no"></iframe>
+        </div>
+        <iframe id="right-creative" src="./right/index.html" frameborder="0"></iframe>
+    </div>
+
+    <script>
+        function updateTestInfo() {
+            var dpr = (typeof window.devicePixelRatio !== 'undefined') ? window.devicePixelRatio : '1';
+            document.querySelector('.test-info .ua').innerHTML = window.navigator.userAgent;
+            document.querySelector('.test-info .display').innerHTML = 'Screen: ' + window.screen.width + 'x' + window
+                .screen.height + ' - DPR: ' + dpr + ' - Viewport: ' + window.innerWidth + 'x' + window.innerHeight;
+        }
+
+        function updateMinDisplayWarning() {
+            var minWidth = 960 + 130 + 130;
+            if (window.innerWidth < minWidth || (window.innerWidth / window.innerHeight) > 2.5) {
+                document.querySelector('.size-info').classList.add('show');
+            } else {
+                document.querySelector('.size-info').classList.remove('show');
+            }
+        }
+        updateTestInfo();
+        updateMinDisplayWarning();
+        var iframesWindows = document.querySelectorAll('iframe');
+        var banners = [];
+        var additionalMethods = {
+            addCssClassToTarget: function (target, params) {
+                if (params.className) {
+                    var arr = target.className.split(' ');
+                    if (arr.indexOf(params.className) == -1) {
+                        target.className += ' ' + params.className;
+                    }
+                }
+                if (params.value) {
+                    document.querySelector('.test-info').style.display = 'none';
+                    document.querySelector('.infos').style.display = 'none';
+                    console.info('los', target, params);
+                    target.style.cssText = params.value;
+                }
+            },
+            removeCssClassFromTarget: function (target, params) {
+                document.querySelector('.test-info').style.display = 'block';
+                document.querySelector('.infos').style.display = 'block';
+
+                if (params.className) {
+                    target.className = target.className.replace(params.className, '');
+                }
+                target.style.cssText = '';
+            }
+        };
+
+
+        var initTop;
+
+        if (!Object.assign) {
+            Object.defineProperty(Object, 'assign', {
+                enumerable: false,
+                configurable: true,
+                writable: true,
+                value: function (target) {
+                    'use strict';
+                    if (target === undefined || target === null) {
+                        throw new TypeError('Cannot convert first argument to object');
+                    }
+
+                    var to = Object(target);
+                    for (var i = 1; i < arguments.length; i++) {
+                        var nextSource = arguments[i];
+                        if (nextSource === undefined || nextSource === null) {
+                            continue;
+                        }
+                        nextSource = Object(nextSource);
+
+                        var keysArray = Object.keys(Object(nextSource));
+                        for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+                            var nextKey = keysArray[nextIndex];
+                            var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+                            if (desc !== undefined && desc.enumerable) {
+                                to[nextKey] = nextSource[nextKey];
+                            }
+                        }
+                    }
+                    return to;
+                }
+            });
+        }
+
+        window.onload = function () {
+
+            if (iframesWindows) {
+                updateIframes();
+                setInterval(function () {
+                    updateIframes();
+
+                    var top = document.querySelector('#top-creative').getBoundingClientRect().top * -1;
+                    updateIframes({
+                        scrollPos: top
+                    });
+                }, 50);
+            }
+        };
+        window.onresize = function () {
+            if (iframesWindows) {
+                updateIframes();
+                updateTestInfo();
+                updateMinDisplayWarning();
+            }
+        };
+        window.onscroll = function () {
+            if (iframesWindows) {
+
+                var top = document.querySelector('#top-creative').getBoundingClientRect().top * -1;
+                updateIframes({
+                    scrollPos: top
+                });
+            }
+        };
+
+        if (window.addEventListener) {
+            window.addEventListener('message', processIframeMessage, false);
+        } else {
+            window.attachEvent('onmessage', processIframeMessage);
+        }
+
+        function processIframeMessage(messageObj) {
+            var data = JSON.parse(messageObj.data);
+
+            if (typeof messageObj.data !== 'undefined') {
+                sendPostMessage(data);
+            }
+        }
+
+        function sendPostMessage(data) {
+            for (var i = 0; i < iframesWindows.length; i++) {
+                iframesWindows[i].contentWindow.postMessage(JSON.stringify(data), '*');
+            }
+        }
+
+        function updateIframes(obj) {
+            if (!obj) {
+                obj = {};
+            }
+
+            for (var i = 0; i < iframesWindows.length; i++) {
+
+                var top = document.querySelector('#top-creative').parentNode.getBoundingClientRect().top;
+
+                if (typeof initTop === 'undefined') {
+                    initTop = top;
+                }
+
+                var newTop = initTop;
+                if (typeof obj.scrollPos !== 'undefined') {
+                    newTop = initTop - obj.scrollPos;
+                }
+
+                if (top < 0) {
+                    top = 0;
+                }
+
+                document.querySelector('#left-creative').parentNode.style.top = top + 'px';
+                document.querySelector('#left-creative').parentNode.style.height = window.innerHeight + 'px';
+                document.querySelector('#right-creative').parentNode.style.height = window.innerHeight + 'px';
+                document.querySelector('#right-creative').parentNode.style.top = top + 'px';
+
+                obj = Object.assign(obj, {
+                    h: window.innerHeight,
+                    w: window.innerWidth,
+                    topOffset: -top,
+                    scrollHeight: window.document.body.clientHeight
+                });
+                iframesWindows[i].contentWindow.postMessage(JSON.stringify(obj), '*');
+            }
+        }
+    </script>
+</body>
+
+</html>

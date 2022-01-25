@@ -1,0 +1,118 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+.container {
+    width: 100%;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+}
+
+#top-creative {
+    width: 960px;
+    height: 250px;
+
+    overflow: hidden;
+
+    margin: 0 auto;
+}
+
+#site_main {
+    width: 960px;
+    margin: 0 auto;
+}
+
+#left-creative {
+    width: calc((100% - 960px)/2);
+    height: 100vh;
+
+    overflow: hidden;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+#right-creative {
+    width: calc((100% - 960px)/2);
+    height: 100vh;
+
+    overflow: hidden;
+
+    position: fixed;
+    right: 0;
+    top: 0;
+}
+
+#bottom-creative {
+    width: 960px;
+    height: 100px;
+
+    overflow: hidden;
+
+    margin: 0 auto;
+}
+
+.infos {
+    top: 265px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 450px;
+    max-width: 850px;
+    left: 50%;
+    transform: translate(-49.8%, 0);
+    position: fixed;
+    flex-direction: column;
+}
+
+.size-info {
+    opacity: 0;
+    transition: 0.4s ease;
+    display: inline-block;
+    margin: 10px 30px;
+    padding: 10px 30px;
+    background-color: #ffe185;
+    width: 100%;
+    position: absolute;
+    z-index: 1000;
+    font-family: "Open Sans", Arial, sans-serif;
+    color: #000;
+    font-weight: normal;
+    font-size: 14px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border: 1px solid #ffbd89;
+}
+
+.size-info.show {
+    opacity: 1;
+    position: relative;
+}
+
+.test-info {
+    max-width: 500px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border: 1px solid #c7c7c7;
+    padding: 10px 20px;
+    background-color: #eeeeee;
+    transform: translate(-49.8%, 0);
+    bottom: 120px;
+    left: 50%;
+    width: 100%;
+    position: fixed;
+    z-index: 1000;
+    font-family: "Open Sans", Arial, sans-serif;
+    color: #9c9c9c;
+    font-weight: normal;
+    font-size: 14px;
+}
+.test-info .display { font-weight: bold }
+.test-info span { display: block }
